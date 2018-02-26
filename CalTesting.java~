@@ -1,0 +1,102 @@
+import static org.junit.Assert.*;
+import org.junit.Test;
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
+
+import junit.framework.JUnit4TestAdapter; 
+import junit.framework.TestCase; 
+import junit.framework.TestSuite; 
+public class CalTesting{
+
+  
+ @Test
+ //Tests if the distance between two days in the same month outputs the right value. 
+ public void calTest1(){
+   Cal cal = new Cal();
+   int days = cal.cal(12, 1, 12, 10, 2017);
+   assertTrue(days == 9);
+ }
+ //Tests if the distance between two days in different months is the right value. 
+ @Test
+  public void calTest2(){
+   Cal cal = new Cal();
+   int days = cal.cal(11, 1, 12, 10, 2017);
+   assertTrue(days == 39);
+ }
+ //Test for IndexOutOfBoundsException. 
+ @Test(expected = IndexOutOfBoundsException.class)
+  public void calTest3(){
+   Cal cal = new Cal();
+   int days = cal.cal(-9, 1, 12, 10, 2017);
+ }
+ //Tests to see if negative year produces functional output. 
+ @Test
+  public void calTest4(){
+   Cal cal = new Cal();
+   int days = cal.cal(10, 1, 12, 10, -2017);
+     assertTrue(days == 70);
+ }
+ //Tests to see if a non-leap year february can have 29 days and return an error. 
+ //Conclusion: Cal does not return an error.
+  @Test
+  public void calTest5(){
+   Cal cal = new Cal();
+   int days = cal.cal(2, 29, 12, 10, 2017);
+     assertTrue(days == 284);
+ }
+  //Tests to see if any number of days can be input and return a proper value. 
+  @Test
+  public void calTest6(){
+   Cal cal = new Cal();
+   int days = cal.cal(2, 200, 12, 10, 2017);
+     assertTrue(days == 113);
+ }
+  //Tests to see if any number of days can be input AND the input days are negative.
+  @Test
+  public void calTest7(){
+   Cal cal = new Cal();
+   int days = cal.cal(2, 10, 12, -1000, 2017);
+
+   assertTrue(days < 0);
+  }
+  //Tests to see if a later date can be input first and output the proper days. 
+  @Test
+  public void calTest8(){
+    Cal cal = new Cal();
+    int days = cal.cal(2, 10, 1, 10, 2017);
+    assertTrue(days == 28);
+  }
+  //Tests to see if all the values are 0, the return value is 0.
+  @Test
+  public void calTest9(){
+    Cal cal = new Cal();
+    int days = cal.cal(0, 0, 0, 0, 0);
+    System.out.println(days);
+    assertTrue(days == 0);
+  }
+  //Tests leap year functionality. 
+  @Test
+  public void calTest10(){
+    Cal cal = new Cal();
+    int days = cal.cal(2, 29, 2, 29, 2020);
+    assertTrue(days == 0);
+  }
+  
+  
+  
+ 
+
+ public static void main(String[] args) {
+      Result result = JUnitCore.runClasses(CalTesting.class);
+  
+      for (Failure failure : result.getFailures()) {
+         System.out.println(failure.toString());
+         System.out.println("Check Tests");
+      }
+      
+
+  
+      System.out.printf("Successful on %d Tests!\n Failed %d Tests...\n", result.getRunCount()-result.getFailureCount(),result.getFailureCount() );
+   }
+}
